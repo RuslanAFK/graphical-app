@@ -1,0 +1,48 @@
+<app-header></app-header>
+
+
+<div class="row">
+  <div class="col-xs-3">
+    <input type="file" accept="image/*" (change)="uploadImage($event)" class="form-control">
+    <hr>
+    <a class="btn btn-primary" id="link" (click)="saveImage()">Save</a>
+    <button class="btn btn-primary" (click)="resetImage()">Reset</button>
+    <hr>
+    <label>Lightness</label>
+    <input id="lighterSlider" type="range" [(ngModel)]="hsl.l" min="0" max="100" (change)="onLightnessChange()">
+  </div>
+
+  <div class="col-xs-5">
+    <!-- Hidden image that will be used for
+holding the source image -->
+    <img id="sourceImage" crossorigin="anonymous">
+
+    <div class="image-preview">
+
+      <!-- Canvas that will hold the
+  image to be edited -->
+      <canvas id="canvas" height="0" (mouseup)="onMouseUpCanvas($event)"></canvas>
+    </div>
+  </div>
+  <div class="col-xs-3">
+    <div>
+      <label>Cyan</label>
+      <input type="number" class="form-control" [(ngModel)]="cmyk.c">
+      <label>Magenta</label>
+      <input type="number" class="form-control" [(ngModel)]="cmyk.m">
+      <label>Yellow</label>
+      <input type="number" class="form-control" [(ngModel)]="cmyk.y">
+      <label>blacK</label>
+      <input type="number" class="form-control" [(ngModel)]="cmyk.k">
+    </div>
+    <hr>
+    <div>
+      <label>Hue</label>
+      <input type="number" class="form-control" [(ngModel)]="hsv.h">
+      <label>Saturation</label>
+      <input type="number" class="form-control" [(ngModel)]="hsv.s">
+      <label>Value</label>
+      <input type="number" class="form-control" [(ngModel)]="hsv.v">
+    </div>
+  </div>
+</div>
