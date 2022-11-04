@@ -1,32 +1,41 @@
 <app-header [uploadVisible]="false"></app-header>
 <div class="row">
-  <div class="col-xs-3">
+  <div class="col-xs-2">
     <form>
       <h4>Вкажіть координати трикутника</h4>
 
       <div class="form-group">
-        <label>1</label>
-        <input class="form-control" type="number" value="0" name="x1">
-        <input class="form-control" type="number" value="0" name="y1">
+        <label>Точка 1</label>
+        <input class="form-control" type="number" [(ngModel)]="x1" name="x1" (change)="drawTriangle()">
+        <input class="form-control" type="number" [(ngModel)]="y1" name="y1" (change)="drawTriangle()">
       </div>
 
       <div class="form-group">
-        <label>2</label>
-        <input class="form-control" type="number" value="0" name="x2">
-        <input class="form-control" type="number" value="0" name="y2">
+        <label>Точка 2</label>
+        <input class="form-control" type="number" [(ngModel)]="x2" name="x2" (change)="drawTriangle()">
+        <input class="form-control" type="number" [(ngModel)]="y2" name="y2" (change)="drawTriangle()">
       </div>
 
       <div class="form-group">
-        <label>3</label>
-        <input class="form-control" type="number" value="0" name="x3">
-        <input class="form-control" type="number" value="0" name="y3">
+        <label>Точка 3</label>
+        <input class="form-control" type="number" [(ngModel)]="x3" name="x3" (change)="drawTriangle()">
+        <input class="form-control" type="number" [(ngModel)]="y3" name="y3" (change)="drawTriangle()">
       </div>
 
-      <button class="btn btn-primary center" type="submit">Побудувати</button>
     </form>
   </div>
-  <div class="col-xs-8">
-    <h1>Canvas</h1>
+  <div class="col-xs-6">
     <canvas></canvas>
+  </div>
+  <div class="col-xs-3">
+    <label>Перемістити по X=Y</label>
+    <input type="range" [(ngModel)]="sliderVal" [min]="-maxValSlider()" [max]="maxValSlider()"
+      (change)="onSliderChange()">
+    <hr>
+    <button class="btn btn-primary" (click)="rotate30()">Повернути на 30 градусів</button>
+    <hr>
+    <label>Перемістити по X=Y при одночасному повороті на 30 градусів</label>
+    <input type="range" [(ngModel)]="sliderVal" [min]="-maxValSlider()" [max]="maxValSlider()"
+      (change)="onSlider2Change()">
   </div>
 </div>
