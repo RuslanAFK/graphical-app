@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { rotate } from './algorithms/rotations';
+import { initCanvas } from './algorithms/painter';
 
 @Component({
   selector: 'app-transformation',
@@ -23,54 +24,29 @@ export class TransformationComponent implements OnInit {
   constructor() { }
 
   validateData = () => {
-    if (!this.canvas) return false;
+    if (!this.canvas) {
+      alert(`Canvas is not defined.`)
+      return false;
+    }
     const maxX = this.canvas.width / 2, maxY = this.canvas.height / 2;
 
-    if (this.x1 > maxX || this.x1 < -maxX || this.x2 > maxX || this.x2 < -maxX || this.x3 > maxX || this.x3 < -maxX)
+    if (this.x1 > maxX || this.x1 < -maxX || this.x2 > maxX || this.x2 < -maxX || this.x3 > maxX || this.x3 < -maxX
+      || this.y1 > maxY || this.y1 < -maxY || this.y2 > maxY || this.y2 < -maxY || this.y3 > maxY || this.y3 < -maxY) {
+      alert(`Max and min value for x is ${maxX} and for y is ${maxY}.`)
       return false;
-    if (this.y1 > maxY || this.y1 < -maxY || this.y2 > maxY || this.y2 < -maxY || this.y3 > maxY || this.y3 < -maxY)
+    }
+    if (this.x1 === this.x2 || this.x1 === this.x3 || this.x2 === this.x3 ||
+      this.y1 === this.y2 || this.y1 === this.y3 || this.y2 === this.y3) {
+      alert(`Points can not be on one line.`)
       return false;
+    }
     return true;
   }
 
-  initCanvas = () => {
-    const ctx = this.canvas?.getContext('2d');
-    if (!ctx || !this.canvas) {
-      alert('Canvas is not defined!')
-      return
-    }
-    this.canvas.width = 500;
-    this.canvas.height = 500;
-    ctx.fillStyle = 'white'
-    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    this.drawLines();
-  }
 
-
-  drawLines = () => {
-    const ctx = this.canvas?.getContext('2d');
-    if (!ctx || !this.canvas) {
-      alert('Canvas is not defined!')
-      return
-    }
-    ctx.fillStyle = 'black'
-    const centerX = this.canvas.width / 2, centerY = this.canvas.height / 2;
-    ctx.beginPath();
-    ctx.moveTo(0, centerY)
-    ctx.lineTo(2 * centerX, centerY)
-    ctx.stroke()
-    ctx.beginPath();
-    ctx.moveTo(centerX, 0)
-    ctx.lineTo(centerX, 2 * centerY)
-    ctx.stroke()
-    ctx.beginPath();
-    ctx.moveTo(2 * centerX, 0)
-    ctx.lineTo(0, 2 * centerY)
-    ctx.stroke()
-  }
 
   drawTriangle = () => {
-    this.initCanvas();
+    initCanvas(this.canvas);
     if (!this.validateData()) {
       return;
     }
@@ -83,6 +59,7 @@ export class TransformationComponent implements OnInit {
     ctx.fillStyle = 'blue'
     const centerX = this.canvas.width / 2, centerY = this.canvas.height / 2;
     this.sliderVal = 0;
+    this.rotatedTimes = 0;
 
     ctx.beginPath();
     ctx.moveTo(centerX + this.x1, centerY + this.y1);
@@ -94,7 +71,7 @@ export class TransformationComponent implements OnInit {
 
   ngOnInit(): void {
     this.canvas = document.querySelector('canvas');
-    this.initCanvas();
+    initCanvas(this.canvas);
     this.drawTriangle();
   }
 
@@ -107,7 +84,7 @@ export class TransformationComponent implements OnInit {
 
 
   onSliderChange = () => {
-    this.initCanvas();
+    initCanvas(this.canvas);
     const valToMove = this.sliderVal / Math.SQRT2;
     const ctx = this.canvas?.getContext('2d');
     if (!ctx || !this.canvas) {
@@ -125,7 +102,7 @@ export class TransformationComponent implements OnInit {
   }
 
   rotate30 = () => {
-    this.initCanvas();
+    initCanvas(this.canvas);
     const ctx = this.canvas?.getContext('2d');
     if (!ctx || !this.canvas) {
       alert('Canvas is not defined!')
@@ -144,6 +121,8 @@ export class TransformationComponent implements OnInit {
 
     ctx.fillStyle = 'blue'
 
+
+
     ctx.beginPath();
     ctx.moveTo(newX1, newY1);
     ctx.lineTo(newX2, newY2);
@@ -153,7 +132,7 @@ export class TransformationComponent implements OnInit {
   }
 
   onSlider2Change = () => {
-    this.initCanvas();
+    initCanvas(this.canvas);
     const valToMove = this.sliderVal / Math.SQRT2;
     const ctx = this.canvas?.getContext('2d');
     if (!ctx || !this.canvas) {
