@@ -8,10 +8,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) { }
-
-  @Input() uploadVisible: boolean = true;
-  @Input() deleteVisible: boolean = true;
+  constructor() { }
 
 
   ngOnInit(): void {

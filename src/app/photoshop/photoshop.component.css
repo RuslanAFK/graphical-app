@@ -5,3 +5,13 @@
 #image-preview {
   display: none;
 }
+
+* {
+  font-family: 'Roboto', sans-serif;
+  margin: 10px;
+}
+
+.center {
+  margin-left: 20%;
+  width: 60%;
+}
