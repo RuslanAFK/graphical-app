@@ -43,8 +43,6 @@ export class TransformationComponent implements OnInit {
     return true;
   }
 
-
-
   drawTriangle = () => {
     initCanvas(this.canvas);
     if (!this.validateData()) {
@@ -120,14 +118,12 @@ export class TransformationComponent implements OnInit {
       -30 * this.rotatedTimes);
 
     ctx.fillStyle = 'blue'
-
-
-
     ctx.beginPath();
     ctx.moveTo(newX1, newY1);
     ctx.lineTo(newX2, newY2);
     ctx.lineTo(newX3, newY3);
     ctx.fill();
+
 
   }
 
@@ -156,6 +152,7 @@ export class TransformationComponent implements OnInit {
     ctx.lineTo(newX2, newY2);
     ctx.lineTo(newX3, newY3);
     ctx.fill();
+
   }
 
 }

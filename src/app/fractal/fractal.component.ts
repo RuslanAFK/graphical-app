@@ -24,6 +24,33 @@ export class FractalComponent implements OnInit {
   })
 
   canvas: p5 | null | HTMLCanvasElement = null;
+  loading = false;
+
+  buildPlasma = (iter: number) => {
+    return new Promise(resolve => {
+      this.canvas = document.createElement('canvas');
+      document.getElementById('for-canvas')?.appendChild(this.canvas);
+      drawPlasma(iter, this.canvas);
+      resolve(null);
+    })
+  }
+
+  buildBroun = (iter: number) => {
+    return new Promise(resolve => {
+      const sketch = (s: any) => {
+        s.setup = () => { setupFbm(s) }
+        s.draw = async() => { await drawFbm(s, iter) }
+      }
+      const sketch_div: any = document.getElementById('for-canvas');
+      this.canvas = new p5(sketch, sketch_div);
+      resolve(null);
+    })
+  }
+
+  catchError = (error: any) => {
+    if (error instanceof Error) alert(error.message)
+    else console.log(error);
+  }
 
   onSubmit() {
     const iter = this.fractalForm.get('iter')?.value;
@@ -31,25 +58,18 @@ export class FractalComponent implements OnInit {
     if (!type || !iter) {
       return;
     }
-    try {
-      if (this.canvas) this.canvas.remove();
+    if (this.canvas) this.canvas.remove();
 
-      if (type === FRACTAL_TYPES.plasma) {
-        this.canvas = document.createElement('canvas');
-        document.getElementById('for-canvas')?.appendChild(this.canvas);
-        drawPlasma(iter, this.canvas);
-      }
-      else {
-        const sketch = (s: any) => {
-          s.setup = () => { setupFbm(s) }
-          s.draw = () => { drawFbm(s, iter) }
-        }
-        const sketch_div: any = document.getElementById('for-canvas');
-        this.canvas = new p5(sketch, sketch_div);
-      }
-    } catch (error) {
-      if (error instanceof Error) alert(error.message)
-      else console.log(error);
+    this.loading = true;
+    if (type === FRACTAL_TYPES.plasma) {
+      this.buildPlasma(iter)
+        .catch(error => this.catchError(error))
+        .finally(() => this.loading = false)
+    }
+    else {
+      this.buildBroun(iter)
+        .catch(error => this.catchError(error))
+        .finally(() => this.loading = false)
     }
 
   }

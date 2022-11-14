@@ -5,6 +5,7 @@ let range = 15;
 let ax = [];
 let ay = [];
 
+/* Setting up canvas */
 export function setupFbm(s) {
   s.createCanvas(500, 500);
   for (let i = 0; i < num; i++) {
@@ -16,6 +17,7 @@ export function setupFbm(s) {
   s.noLoop();
 }
 
+/* One iteration */
 function fbmIteration(s) {
   // Shift all elements 1 place to the left
   for (let i = 1; i < num; i++) {
@@ -39,9 +41,13 @@ function fbmIteration(s) {
   }
 }
 
+/* N Iterations */
 export function drawFbm(s, iter) {
-  for (var i = 0; i < iter; i++) {
-    fbmIteration(s);
-  }
+  return new Promise(resolve => {
+    for (var i = 0; i < iter; i++) {
+      fbmIteration(s);
+    }
+    return resolve(null)
+  })
 }
 
