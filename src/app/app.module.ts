@@ -3,13 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FractalComponent } from './fractal/fractal.component';
-import { PhotoshopComponent } from './photoshop/photoshop.component';
-import { TransformationComponent } from './transformation/transformation.component';
-import { HomeComponent } from './home/home.component';
-import { HeaderComponent } from './header/header.component';
-import { DocsComponent } from './docs/docs.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HeaderComponent } from './components/header/header.component';
+import { DocsComponent } from './routes/docs/docs.component';
+import { FractalComponent } from './routes/fractals/fractal.component';
+import { HomeComponent } from './routes/home/home.component';
+import { PhotoshopComponent } from './routes/photoshop/photoshop.component';
+import { TransformationComponent } from './routes/transformation/transformation.component';
+
 
 @NgModule({
   declarations: [

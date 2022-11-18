@@ -8,7 +8,7 @@ enum FRACTAL_TYPES {
   plasma = 'plasma'
 }
 
-import { drawFbm, setupFbm } from './algorithms/fbm.js';
+import { drawFbm, setupFbm } from './algorithms/fbm';
 import { drawPlasma } from './algorithms/plasma';
 
 @Component({
@@ -31,7 +31,7 @@ export class FractalComponent implements OnInit {
       this.canvas = document.createElement('canvas');
       document.getElementById('for-canvas')?.appendChild(this.canvas);
       drawPlasma(iter, this.canvas);
-      resolve(null);
+      resolve("Resolved");
     })
   }
 
@@ -39,11 +39,11 @@ export class FractalComponent implements OnInit {
     return new Promise(resolve => {
       const sketch = (s: any) => {
         s.setup = () => { setupFbm(s) }
-        s.draw = async() => { await drawFbm(s, iter) }
+        s.draw = () => { drawFbm(s, iter) }
       }
       const sketch_div: any = document.getElementById('for-canvas');
       this.canvas = new p5(sketch, sketch_div);
-      resolve(null);
+      resolve("Resolved");
     })
   }
 

@@ -2,11 +2,11 @@
 let num = 3000;
 let range = 15;
 
-let ax = [];
-let ay = [];
+let ax: number[] = [];
+let ay: number[] = [];
 
 /* Setting up canvas */
-export function setupFbm(s) {
+export function setupFbm(s: any) {
   s.createCanvas(500, 500);
   for (let i = 0; i < num; i++) {
     ax[i] = s.width / 2;
@@ -18,7 +18,7 @@ export function setupFbm(s) {
 }
 
 /* One iteration */
-function fbmIteration(s) {
+function fbmIteration(s: any) {
   // Shift all elements 1 place to the left
   for (let i = 1; i < num; i++) {
     ax[i - 1] = ax[i];
@@ -42,12 +42,9 @@ function fbmIteration(s) {
 }
 
 /* N Iterations */
-export function drawFbm(s, iter) {
-  return new Promise(resolve => {
-    for (var i = 0; i < iter; i++) {
-      fbmIteration(s);
-    }
-    return resolve(null)
-  })
+export function drawFbm(s: any, iter: number) {
+  for (var i = 0; i < iter; i++) {
+    fbmIteration(s);
+  }
 }
 

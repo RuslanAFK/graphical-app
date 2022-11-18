@@ -8,11 +8,11 @@ const MATRIX_DIMENSIONS = {
   pixelWidth: CANVAS_WIDTH / MATRIX_LENGTH
 };
 
-function getColor(percentage) {
+function getColor(percentage: number) {
   return landscapeColors(percentage);
 }
 
-function landscapeColors(percentage) {
+function landscapeColors(percentage: number) {
   const hue = percentage >= 0.66 ? 240 : percentage >= 0.33 ? 120 : 0;
   const lightness = 50;
   const saturation = 100;
@@ -20,8 +20,9 @@ function landscapeColors(percentage) {
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
 
-function draw(terrain_matrix, canvas) {
+function draw(terrain_matrix: number[][], canvas: HTMLCanvasElement) {
   const ctx = canvas.getContext("2d");
+  if (!ctx) return;
   ctx.clearRect(0, 0, CANVAS_HEIGHT, CANVAS_WIDTH);
   ctx.beginPath();
   terrain_matrix.forEach((pixelsRow, rowIndex) => {
@@ -40,7 +41,7 @@ function draw(terrain_matrix, canvas) {
   ctx.closePath();
 }
 
-function randomInRange(min, max) {
+function randomInRange(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
@@ -60,7 +61,7 @@ function generateMatrix() {
   return matrix;
 }
 
-function calculateSquare(matrix, chunkSize, randomFactor) {
+function calculateSquare(matrix: number[][], chunkSize: number, randomFactor: number) {
   let sumComponents = 0;
   let sum = 0;
   for (let i = 0; i < matrix.length - 1; i += chunkSize) {
@@ -80,7 +81,7 @@ function calculateSquare(matrix, chunkSize, randomFactor) {
         TOP_RIGHT
       ].reduce(
         (result, value) => {
-          if (isFinite(value) && value != null) {
+          if (value && isFinite(value)) {
             result.sum += value;
             result.count += 1;
           }
@@ -94,7 +95,7 @@ function calculateSquare(matrix, chunkSize, randomFactor) {
   }
 }
 
-function calculateDiamond(matrix, chunkSize, randomFactor) {
+function calculateDiamond(matrix: number[][], chunkSize: number, randomFactor: number) {
   const half = chunkSize / 2;
   for (let y = 0; y < matrix.length; y += half) {
     for (let x = (y + half) % chunkSize; x < matrix.length; x += chunkSize) {
@@ -104,7 +105,7 @@ function calculateDiamond(matrix, chunkSize, randomFactor) {
       const RIGHT = matrix[y][x + half];
       const { count, sum } = [BOTTOM, LEFT, TOP, RIGHT].reduce(
         (result, value) => {
-          if (isFinite(value) && value != null) {
+          if (value && isFinite(value)) {
             result.sum += value;
             result.count += 1;
           }
@@ -118,7 +119,7 @@ function calculateDiamond(matrix, chunkSize, randomFactor) {
   return matrix;
 }
 
-function diamondSquare(matrix, iter) {
+function diamondSquare(matrix: number[][], iter: number) {
   let chunkSize = MATRIX_LENGTH - 1;
   let randomFactor = RANDOM_INITIAL_RANGE;
 
@@ -132,7 +133,7 @@ function diamondSquare(matrix, iter) {
   return matrix;
 }
 
-function normalizeMatrix(matrix) {
+function normalizeMatrix(matrix: number[][]) {
   const maxValue = matrix.reduce((max, row) => {
     return row.reduce((max, value) => Math.max(value, max));
   }, -Infinity);
@@ -142,7 +143,7 @@ function normalizeMatrix(matrix) {
   });
 }
 
-export function drawPlasma(iter, canvas) {
+export function drawPlasma(iter: number, canvas: HTMLCanvasElement) {
   canvas.height = CANVAS_HEIGHT;
   canvas.width = CANVAS_WIDTH;
   const matrix = diamondSquare(generateMatrix(), iter);

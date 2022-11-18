@@ -29,8 +29,11 @@ export class PhotoshopComponent implements OnInit {
     this.editor?.resetImage();
   }
 
-  onMouseUpCanvas(event: Event) {
-    this.rgb = getRgb(event, this.editor?.canvas);
+  onMouseUpCanvas(event: MouseEvent) {
+    if (!this.editor || !(this.editor.canvas instanceof HTMLCanvasElement)) return
+    let rgb = getRgb(this.editor.canvas, event);
+    if (!rgb) return;
+    this.rgb = rgb;
     this.hsv = rgb2hsv(this.rgb);
     let cmyk = rgb2cmyk(this.rgb);
     if (cmyk) this.cmyk = cmyk;

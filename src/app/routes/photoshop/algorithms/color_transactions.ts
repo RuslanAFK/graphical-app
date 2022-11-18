@@ -1,23 +1,22 @@
-export function getElementPosition(obj) {
+import { Hsl, Rgb } from "./color_types";
+
+export function getElementPosition(element: any) {
   var curleft = 0, curtop = 0;
-  if (obj.offsetParent) {
-    do {
-      curleft += obj.offsetLeft;
-      curtop += obj.offsetTop;
-    } while (obj = obj.offsetParent);
-    return { x: curleft, y: curtop };
-  }
-  return undefined;
+  do {
+    curleft += element.offsetLeft;
+    curtop += element.offsetTop;
+  } while (element = element.offsetParent);
+  return { x: curleft, y: curtop };
 }
-export function getEventLocation(element, event) {
+export function getEventLocation(element: HTMLCanvasElement, event: MouseEvent) {
   var pos = getElementPosition(element);
-    return {
-      x: (event.pageX - pos.x),
-      y: (event.pageY - pos.y)
-    }
+  return {
+    x: (event.pageX - pos.x),
+    y: (event.pageY - pos.y)
+  }
 }
 
-export function rgb2cmyk(rgbObj) {
+export function rgb2cmyk(rgbObj: Rgb) {
   var computedC = 0;
   var computedM = 0;
   var computedY = 0;
@@ -60,16 +59,16 @@ export function rgb2cmyk(rgbObj) {
   }
 }
 
-export function rgb2hsv(rgbObj) {
+export function rgb2hsv(rgbObj: Rgb) {
   const { r, g, b } = rgbObj;
-  let rabs, gabs, babs, rr, gg, bb, h, s, v, diff, diffc, percentRoundFn;
+  let rabs, gabs, babs, rr, gg, bb, h = 0, s, v = 0, diff = 0, diffc, percentRoundFn;
   rabs = r / 255;
   gabs = g / 255;
   babs = b / 255;
-  v = Math.max(rabs, gabs, babs),
-    diff = v - Math.min(rabs, gabs, babs);
-  diffc = c => (v - c) / 6 / diff + 1 / 2;
-  percentRoundFn = num => Math.round(num * 100) / 100;
+  v = Math.max(rabs, gabs, babs)
+  diff = v - Math.min(rabs, gabs, babs)
+  diffc = (c: number) => (v - c) / 6 / diff + 1 / 2;
+  percentRoundFn = (num: number) => Math.round(num * 100) / 100;
   if (diff == 0) {
     h = s = 0;
   } else {
@@ -98,7 +97,7 @@ export function rgb2hsv(rgbObj) {
   };
 }
 
-export function rgb2hsl(rgbObj) {
+export function rgb2hsl(rgbObj: Rgb) {
   let { r, g, b } = rgbObj;
   r /= 255;
   g /= 255;
@@ -119,17 +118,19 @@ export function rgb2hsl(rgbObj) {
   }
 };
 
-export function getRgb(e, canvas, xyObj) {
+export function getRgb(canvas: HTMLCanvasElement, e?: MouseEvent, xyObj?: { x: number, y: number }) {
   let eventLocation;
-  if(e) {
-    eventLocation = getEventLocation(canvas, e, xyObj);
+  if (xyObj && !e) {
+    eventLocation = xyObj;
   }
   else {
-    eventLocation = xyObj;
+    if (!e) return;
+    eventLocation = getEventLocation(canvas, e);
   }
   let context = canvas.getContext('2d');
 
-  let pixelData = context.getImageData(eventLocation.x, eventLocation.y, 1, 1).data;
+  let pixelData = context?.getImageData(eventLocation.x, eventLocation.y, 1, 1).data;
+  if (!pixelData) return;
   return {
     r: pixelData[0],
     g: pixelData[1],
@@ -138,13 +139,13 @@ export function getRgb(e, canvas, xyObj) {
   }
 }
 
-export const hsl2rgb = (hslObj) => {
+export const hsl2rgb = (hslObj: Hsl) => {
   let { h, s, l } = hslObj;
   s /= 100;
   l /= 100;
-  const k = n => (n + h / 30) % 12;
+  const k = (n: number) => (n + h / 30) % 12;
   const a = s * Math.min(l, 1 - l);
-  const f = n =>
+  const f = (n: number) =>
     l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
   return {
     r: 255 * f(0),
@@ -153,5 +154,5 @@ export const hsl2rgb = (hslObj) => {
   };
 };
 
-export const rgb2hex = ({ r, g, b }) => '#' + [r, g, b]
+export const rgb2hex = ({ r, g, b }: Rgb) => '#' + [r, g, b]
   .map(x => x.toString(16).padStart(2, '0')).join('')

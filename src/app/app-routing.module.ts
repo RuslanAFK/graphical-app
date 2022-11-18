@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DocsComponent } from './docs/docs.component';
-import { FractalComponent } from './fractal/fractal.component';
-import { HomeComponent } from './home/home.component';
-import { PhotoshopComponent } from './photoshop/photoshop.component';
-import { TransformationComponent } from './transformation/transformation.component';
+import { DocsComponent } from './routes/docs/docs.component';
+import { FractalComponent } from './routes/fractals/fractal.component';
+import { HomeComponent } from './routes/home/home.component';
+import { PhotoshopComponent } from './routes/photoshop/photoshop.component';
+import { TransformationComponent } from './routes/transformation/transformation.component';
+
 
 const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: 'full'},
